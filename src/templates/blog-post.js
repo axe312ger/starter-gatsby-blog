@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import get from 'lodash/get'
-import Img from 'gatsby-image'
+import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from '../components/layout'
 
 import * as heroStyles from '../components/hero.module.css'
@@ -17,11 +17,10 @@ class BlogPostTemplate extends React.Component {
         <div style={{ background: '#fff' }}>
           <Helmet title={`${post.title} | ${siteTitle}`} />
           <div className={heroStyles.hero}>
-            <Img
+            <GatsbyImage
+              image={post.heroImage.gatsbyImageData}
               className={heroStyles.heroImage}
-              alt={post.title}
-              fluid={post.heroImage.fluid}
-            />
+              alt={post.title} />
           </div>
           <div className="wrapper">
             <h1 className="section-headline">{post.title}</h1>
@@ -52,9 +51,12 @@ export const pageQuery = graphql`
       title
       publishDate(formatString: "MMMM Do, YYYY")
       heroImage {
-        fluid(maxWidth: 1180, background: "rgb:000000") {
-          ...GatsbyContentfulFluid_tracedSVG
-        }
+        gatsbyImageData(
+          width: 1180
+          placeholder: TRACED_SVG
+          backgroundColor: "rgb:000000"
+          layout: CONSTRAINED # @todo Bug: remove this line as soon default is set properly
+        )
       }
       body {
         childMarkdownRemark {

@@ -46,9 +46,13 @@ export const pageQuery = graphql`
           publishDate(formatString: "MMMM Do, YYYY")
           tags
           heroImage {
-            fluid(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
-              ...GatsbyContentfulFluid_tracedSVG
-            }
+            gatsbyImageData(
+              width: 350
+              height: 196
+              resizingBehavior: SCALE
+              placeholder: TRACED_SVG
+              layout: CONSTRAINED # @todo Bug: remove this line as soon default is set properly
+            )
           }
           description {
             childMarkdownRemark {
